@@ -15,6 +15,9 @@ module.exports = {
     loaders: [{
       test: /\.s?css$/,
       loader: 'raw-loader',
+    }, {
+      test: /\.html$/,
+      loader: 'file-loader?name=static/[name].[ext]&outputPath=static/!extract-loader!html-loader?interpolate=true',
     }]
   },
   plugins: [

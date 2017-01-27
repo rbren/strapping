@@ -1,3 +1,4 @@
+require('./index.html');
 const Sass = require('sass.js/dist/sass.js');
 const ColorPicker = require('simple-color-picker');
 const FILES = require('./bootstrap.js');

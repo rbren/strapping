@@ -6,8 +6,14 @@
         strapping.initialize();
       }
     </script>
+    <style>
+      body {
+        padding-left: 320px;
+      }
+    </style>
   </head>
   <body onload="start()">
-    <h1> Hello World! </h1>
+${require('!raw-loader!./intro.html')}
+${require('!raw-loader!./preview.html')}
   </body>
 </html>
