@@ -13,7 +13,7 @@ module.exports = {
   devtool: 'source-map',
   module: {
     loaders: [{
-      test: /\.scss$/,
+      test: /\.s?css$/,
       loader: 'raw-loader',
     }]
   },

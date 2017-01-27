@@ -1,4 +1,5 @@
 const Sass = require('sass.js/dist/sass.js');
+const ColorPicker = require('simple-color-picker');
 const FILES = require('./bootstrap.js');
 
 let variables = require('./defaults.js');
@@ -16,9 +17,32 @@ const escapeQuotes = str => {
 const unescapeQuotes = str => {
   return str.replace(/&quot;/g, '"');
 }
+const isColor = name => {
+  return name.indexOf('brand') !== -1 || name.indexOf('color') !== -1;
+}
 
 const loadingTemplate = function(opts) {
   return `<h2>Loading</h2>`
+}
+
+const inputTemplate = function(name, value) {
+  let input = `
+<input class="input-xs form-control" type="text" value="${escapeQuotes(value)}" name="${name}">`
+
+  if (isColor(name)) {
+    input = `
+<div class="input-group color-input-group" onclick="strapping.showColorPicker(this)">
+    ${input}
+    <span class="input-group-addon"></span>
+    </span>
+</div>`
+  }
+
+  return `
+<div class="form-group">
+  <label>${name.substring(1)}</label>
+  ${input}
+</div>`
 }
 
 const strappingTemplate = function(opts) {
@@ -31,12 +55,7 @@ const strappingTemplate = function(opts) {
   if (opts.error) error = `
 <div class="alert alert-warning">${opts.error}</div>`
 
-  let inputs = Object.keys(opts.vars).map(k => `
-<div class="form-group">
-  <label>${k}</label>
-  <input class="input-xs form-control" type="text" value="${escapeQuotes(opts.vars[k])}" name="${k}">
-</div>`).join('\n');
-
+  let inputs = Object.keys(opts.vars).map(k => inputTemplate(k, opts.vars[k])).join('\n')
   return `
 <form onsubmit="strapping.compile(); return false">
   ${submit}
@@ -53,7 +72,10 @@ let Strapping = window.Strapping = function() {
 }
 
 Strapping.prototype.initialize = function() {
-  if (!window.Strapping.initialized) addCSS(require('!raw-loader!./styles.css'));
+  if (!window.Strapping.initialized) {
+    addCSS(require('simple-color-picker/src/simple-color-picker.css'));
+    addCSS(require('!raw-loader!./styles.css'));
+  }
   window.Strapping.initialized = true;
   this.editor = document.createElement('div');
   this.editor.setAttribute('id', 'StrappingEditor');
@@ -84,8 +106,33 @@ Strapping.prototype.compileInner = function() {
     this.compiledOnce = true;
     addCSS(result.text);
     let bgColor = window.getComputedStyle( document.body ,null).getPropertyValue('background-color');
-    console.log('bg', bgColor);
     this.editor.setAttribute('style', 'background-color: ' + bgColor);
+
+    let varsCSS = Object.keys(variables).filter(v => isColor(v)).map(v => `
+#StrappingEditor input[name="${escapeQuotes(v)}"] ~ .input-group-addon {
+  background-color: ${variables[v]};
+}
+    `).join('\n');
+    varsCSS = '@import "bootstrap/_variables.scss";\n' + varsCSS;
+    this.sass.compile(varsCSS, result => {
+      if (result.status) throw new Error(result.message);
+      addCSS(result.text);
+    })
+  })
+}
+
+Strapping.prototype.showColorPicker = function(elem) {
+  let input = elem.querySelector('input');
+  if (this.picker) this.picker.remove();
+  this.picker = new ColorPicker({
+    color: input.value,
+    el: elem.parentElement,
+    width: 130,
+    height: 100,
+  });
+  this.picker.onChange(function(color) {
+    input.value = color;
+    elem.querySelector('.input-group-addon').setAttribute('style', 'background-color: ' + color);
   })
 }
 
