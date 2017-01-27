@@ -1,3 +1,4 @@
+const Sass = require('sass.js/dist/sass.js');
 const FILES = require('./bootstrap.js');
 
 let Strapping = window.Strapping = function() {
