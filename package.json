@@ -1,0 +1,25 @@
+{
+  "name": "strapping",
+  "version": "2.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "strapping": "bin/strapping"
+  },
+  "scripts": {
+    "test": "mocha",
+    "postinstall": "node_modules/bower/bin/bower install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bobby-brennan/strapping.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bobby-brennan/strapping/issues"
+  },
+  "homepage": "https://github.com/bobby-brennan/strapping#readme",
+  "dependencies": {
+  }
+}
