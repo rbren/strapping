@@ -21,6 +21,7 @@ There can edit your bootstrap variables.  Clicking <b>Set Styles</b> will re-com
 bootstrap and apply the styles to the page.
 
 You can listen for changes as well:
+<pre><code>
 strapping.onCompiled(function(result) {
   console.log(result.status);    // 0 if everything went OK
   console.log(result.message);   // Check this if status !== 0
@@ -30,3 +31,4 @@ strapping.onCompiled(function(result) {
 });
 
 
+</code></pre>
