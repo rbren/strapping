@@ -21,5 +21,10 @@
   },
   "homepage": "https://github.com/bobby-brennan/strapping#readme",
   "dependencies": {
+    "bootstrap-sass": "^3.3.7",
+    "file-loader": "^0.9.0",
+    "raw-loader": "^0.5.1",
+    "sass.js": "^0.10.3",
+    "webpack": "^2.2.0"
   }
 }
