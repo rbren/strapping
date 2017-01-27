@@ -5,11 +5,17 @@ const FILES = require('./bootstrap.js');
 
 let variables = require('./defaults.js');
 
-const addCSS = css => {
+const addCSS = (css, id) => {
   var style = document.createElement("style");
+  if (id) style.setAttribute('id', id);
   style.type = "text/css";
   style.innerHTML = css;
   document.body.appendChild(style);
+}
+
+const removeCSS = id => {
+  let elem = document.getElementById(id);
+  if (elem) elem.parentNode.removeChild(elem);
 }
 
 const escapeQuotes = str => {
@@ -19,8 +25,16 @@ const unescapeQuotes = str => {
   return str.replace(/&quot;/g, '"');
 }
 const isColor = name => {
-  return name.indexOf('brand') !== -1 || name.indexOf('color') !== -1;
+  return name.indexOf('brand') !== -1 || name.indexOf('color') !== -1 || name.indexOf('gray') !== -1;
 }
+
+const INPUT_GROUPS = [{
+  label: "Branding",
+  pattern: /^brand-/,
+}, {
+  label: "Fonts",
+  pattern: /^(font-|headings-)/
+}]
 
 const loadingTemplate = function(opts) {
   return `<h2>Loading</h2>`
@@ -56,7 +70,16 @@ const strappingTemplate = function(opts) {
   if (opts.error) error = `
 <div class="alert alert-warning">${opts.error}</div>`
 
-  let inputs = Object.keys(opts.vars).map(k => inputTemplate(k, opts.vars[k])).join('\n')
+  let addedInputs = [];
+  let inputs = '';
+  INPUT_GROUPS.forEach(g => {
+    let matchingInputs = Object.keys(opts.vars).filter(k => k.substring(1).match(g.pattern));
+    addedInputs = addedInputs.concat(matchingInputs);
+    inputs += `<h2>${g.label}</h2>` + matchingInputs.map(k => inputTemplate(k, opts.vars[k])).join('\n');
+  })
+  let unmatchedInputs = Object.keys(opts.vars).filter(k => addedInputs.indexOf(k) === -1);
+  inputs += `<h2>Miscellaneous</h2>` + unmatchedInputs.map(k => inputTemplate(k, opts.vars[k])).join('\n');
+
   return `
 <form onsubmit="strapping.compile(); return false">
   ${submit}
@@ -103,9 +126,11 @@ Strapping.prototype.compileInner = function() {
   this.sass.writeFile('bootstrap/_variables.scss', varFile)
   this.editor.innerHTML = loadingTemplate();
   this.sass.compile('@import "_bootstrap";', (result) => {
+    removeCSS('bootstrap');
+    removeCSS('strapping');
     this.editor.innerHTML = strappingTemplate({vars: variables, error: result.status ? result.message : null});
     this.compiledOnce = true;
-    addCSS(result.text);
+    addCSS(result.text, 'bootstrap');
     let bgColor = window.getComputedStyle( document.body ,null).getPropertyValue('background-color');
     this.editor.setAttribute('style', 'background-color: ' + bgColor);
 
@@ -117,7 +142,7 @@ Strapping.prototype.compileInner = function() {
     varsCSS = '@import "bootstrap/_variables.scss";\n' + varsCSS;
     this.sass.compile(varsCSS, result => {
       if (result.status) throw new Error(result.message);
-      addCSS(result.text);
+      addCSS(result.text, 'strapping');
     })
   })
 }
