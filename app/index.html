@@ -10,9 +10,22 @@
       body {
         padding-left: 320px;
       }
+      h1,
+      a[href="https://bobby-brennan.github.io/strapping"] {
+        display: none;
+      }
+      h1.replaced-title {
+        display: block;
+      }
     </style>
   </head>
   <body onload="start()">
+    <h1 class="replaced-title">Strapping!</h1>
+    <p>This is a demo of Strapping. You can
+      <a href="https://github.com/bobby-brennan/strapping">
+        view the project on GitHub.
+      </a>
+    </p>
 ${require('!raw-loader!markdown-loader!../README.md')}
 ${require('!raw-loader!./preview.html')}
   </body>
