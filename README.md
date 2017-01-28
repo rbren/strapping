@@ -54,22 +54,29 @@ strapping.onCompiled(function(result) {
 
 ## Customization
 
-### Style
-By default, Strapping loads in a fixed-position column on the left-hand size of the page
-once you call `initialize()`.  This only really works in desktop, and may intefere with
-your page, e.g. by covering the navbar.  You can re-position Strapping using CSS:
+By default Strapping will just append itself to the document body. You can also pass
+in a parent element:
+
+```html
+<body>
+  <div id="Strapping"></div>
+  <script>
+    strapping.initialize('path/to/sass.worker.js', document.getElementById('Strapping'));
+  </script>
+</body>
+```
+
+The inserted element will have the id `#StrappingEditor`, so you can also apply CSS to it:
 
 ```css
 #StrappingEditor {
   position: fixed;
-  top: 72px;
+  top: 0;
   bottom: 0;
   right: 0;
   width: 300px;
 }
 ```
-
-This will put the editor on the right-hand-side, leaving 72px of room at the top for a navbar.
 
 ### Fields
 By default, Strapping allows modification of any Bootstrap variable. You can restrict the list

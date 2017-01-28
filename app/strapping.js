@@ -12,7 +12,8 @@ let variables = require('./defaults');
 
 let Strapping = module.exports = function() {}
 
-Strapping.prototype.initialize = function(workerPath) {
+Strapping.prototype.initialize = function(workerPath, element) {
+  element = element || document.body;
   this.sass = new Sass(workerPath);
   Object.keys(SASS_FILES).forEach(filename => {
     this.sass.writeFile(filename, SASS_FILES[filename]);
@@ -24,7 +25,7 @@ Strapping.prototype.initialize = function(workerPath) {
   window.Strapping.initialized = true;
   this.editor = document.createElement('div');
   this.editor.setAttribute('id', 'StrappingEditor');
-  document.body.appendChild(this.editor);
+  element.appendChild(this.editor);
   this.compile();
 }
 

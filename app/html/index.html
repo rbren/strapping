@@ -1,15 +1,14 @@
 <html>
   <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="dist/strapping.min.js"></script>
     <script>
       function start() {
-        strapping.initialize('dist/sass.worker.js');
+        strapping.initialize('dist/sass.worker.js', document.getElementById('StrappingContainer'));
       }
     </script>
     <style>
-      body {
-        padding-left: 320px;
-      }
       h1,
       a[href="https://bobby-brennan.github.io/strapping"] {
         display: none;
@@ -20,15 +19,33 @@
     </style>
   </head>
   <body onload="start()">
-    <h1 class="force-show">Strapping!</h1>
-    <p>This is a demo of Strapping. Play with the values on the left to
-       change the look and feel of this page - you can see a preview of
-       your theme below.  You can also
-      <a href="https://github.com/bobby-brennan/strapping">
-        view the project on GitHub.
-      </a>
-    </p>
-${require('!raw-loader!markdown-loader!../../README.md')}
-${require('!raw-loader!./preview.html')}
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand">Strapping!</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="https://github.com/bobby-brennan/strapping">GitHub</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="row strapping-row">
+        <div id="StrappingContainer" class="col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
+        <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9">
+          <h1 class="force-show">Strapping!</h1>
+          <p>This is a demo of Strapping. Play with the values on the left to
+             change the look and feel of this page - you can see a preview of
+             your theme below.  You can also
+            <a href="https://github.com/bobby-brennan/strapping">
+              view the project on GitHub.
+            </a>
+          </p>
+          ${require('!raw-loader!markdown-loader!../../README.md')}
+          <h1>Preview</h1>
+          ${require('!raw-loader!./preview.html')}
+        </div>
+      </div>
+    </div>
   </body>
 </html>
