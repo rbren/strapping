@@ -112,9 +112,12 @@ Strapping.prototype.showColorPicker = function(elem) {
     width: 130,
     height: 100,
   });
-  this.picker.onChange(function(color) {
-    input.value = color.toLowerCase();
-    elem.querySelector('.input-group-addon').setAttribute('style', 'background-color: ' + color);
+  this.picker.onChange((color) => {
+    if (this.picker.init) {
+      input.value = color.toLowerCase();
+      elem.querySelector('.input-group-addon').setAttribute('style', 'background-color: ' + color);
+    }
+    this.picker.init = true;
   })
 }
 
