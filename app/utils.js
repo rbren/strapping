@@ -8,7 +8,7 @@ utils.unescapeQuotes = str => {
 }
 
 utils.isColor = name => {
-  return name.match(/(brand|color|gray|-bg|-text|-border)/);
+  return name.match(/(brand|color|gray|-bg$|-text$|-border$)/);
 }
 
 utils.addCSS = (css, id) => {
