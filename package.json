@@ -21,6 +21,7 @@
   "homepage": "https://github.com/bobby-brennan/strapping#readme",
   "dependencies": {
     "bootstrap-sass": "^3.3.7",
+    "bootswatch": "^3.3.7",
     "extract-loader": "^0.1.0",
     "file-loader": "^0.9.0",
     "file-saver": "^1.3.3",

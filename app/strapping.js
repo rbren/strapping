@@ -5,6 +5,7 @@ const saveAs = require('file-saver').saveAs;
 const SASS_FILES = require('./bootstrap');
 const utils = require('./utils');
 const templates = require('./templates');
+const themes = require('./themes');
 
 let variables = require('./defaults');
 
@@ -44,9 +45,23 @@ Strapping.prototype.saveAs = function(type) {
   })
 }
 
-Strapping.prototype.compile = function(callback) {
+Strapping.prototype.setTheme = function(themeName) {
+  let theme = themes.filter(t => t.name === themeName)[0];
+  theme.scss.split('\n')
+    .map(l => l.match(/^(\$\S+):\s*(.*)\s*!default;.*$/))
+    .filter(l => l)
+    .map(match => {
+      return {name: match[1], value: match[2]}
+    })
+    .forEach(v => {
+      variables[v.name] = v.value;
+    })
+  this.compile(null, true);
+}
+
+Strapping.prototype.compile = function(callback, skipInputs) {
   callback = callback || function() {};
-  if (this.compiledOnce) {
+  if (!skipInputs && this.compiledOnce) {
     Object.keys(variables).forEach(v => {
       variables[v] = utils.unescapeQuotes(document.getElementsByName(v)[0].value);
     });

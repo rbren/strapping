@@ -1,5 +1,6 @@
 const inputGroups = require('./input-groups');
 const utils = require('./utils');
+const themes = require('./themes');
 const templates = module.exports = {};
 
 templates.loading = function(opts) {
@@ -32,7 +33,6 @@ templates.heading = function() {
   <div class="btn-toolbar">
     <input class="btn btn-primary" type="submit" value="Preview">
     <div class="btn-group">
-      <a class="btn btn-default">Save As:</a>
       <a class="btn btn-primary" onclick="strapping.saveAs('css')">CSS</a>
       <a class="btn btn-primary" onclick="strapping.saveAs('sass')">Sass</a>
       <a class="btn btn-primary" onclick="strapping.saveAs('json')">JSON</a>
@@ -42,12 +42,26 @@ templates.heading = function() {
 
 }
 
+templates.themes = function() {
+  return `
+<h2>Themes</h2>
+<p>
+  <span class="text-danger">Warning:</span>
+  Setting a theme will overwrite your current settings.
+</p>
+  ` + themes.map(theme => `
+<a href="#" onclick="strapping.setTheme('${theme.name}')">${theme.name}</a> - ${theme.description}
+  `).join('<br>\n');
+}
+
 templates.strapping = function(opts) {
   let heading = opts.heading || templates.heading();
   let links = inputGroups.concat([{label: "Miscellaneous"}]).map(g => `
     <a href="#${g.label}">${g.label}</a>
   `).join('&nbsp;&bull;&nbsp;');
   links = `<p>${links}</p>`;
+
+  let themes = templates.themes();
 
   let error = '';
   if (opts.error) error = `
@@ -69,6 +83,7 @@ templates.strapping = function(opts) {
   ${heading}
   ${error}
   ${links}
+  ${themes}
   ${inputs}
 </form>`
 }
