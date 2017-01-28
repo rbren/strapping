@@ -149,7 +149,7 @@ const strappingTemplate = function(opts) {
   </div>
 </div>`
 
-  let links = INPUT_GROUPS.map(g => `
+  let links = INPUT_GROUPS.concat([{label: "Miscellaneous"}]).map(g => `
     <a href="#${g.label}">${g.label}</a>
   `).join('&nbsp;&bull;&nbsp;');
   links = `<p>${links}</p>`;
@@ -167,7 +167,7 @@ const strappingTemplate = function(opts) {
           + matchingInputs.map(k => inputTemplate(k, opts.vars[k])).join('\n');
   })
   let unmatchedInputs = Object.keys(opts.vars).filter(k => addedInputs.indexOf(k) === -1);
-  inputs += `<h2>Miscellaneous</h2>` + unmatchedInputs.map(k => inputTemplate(k, opts.vars[k])).join('\n');
+  inputs += `<a name="Miscellaneous"></a><h2>Miscellaneous</h2>` + unmatchedInputs.map(k => inputTemplate(k, opts.vars[k])).join('\n');
 
   return `
 <form onsubmit="strapping.compile(); return false">
