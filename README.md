@@ -65,7 +65,10 @@ in a parent element:
 <body>
   <div id="Strapping"></div>
   <script>
-    strapping.initialize('path/to/sass.worker.js', document.getElementById('Strapping'));
+    strapping.initialize({
+      workerPath: 'path/to/sass.worker.js',
+      parent: document.getElementById('Strapping'),
+    });
   </script>
 </body>
 ```
@@ -88,6 +91,7 @@ of available fields using strings and regular expressions:
 
 ```js
 strapping.initialize({
+  workerPath: 'path/to/sass.worker.js',
   fields: [/^(alert-|button-|brand-)/, 'border-radius-base', 'link-color'],
 })
 ```

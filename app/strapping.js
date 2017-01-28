@@ -1,10 +1,9 @@
 const Sass = require('sass.js/dist/sass.js');
-window.Sass = Sass;
 const ColorPicker = require('simple-color-picker');
+const saveAs = require('file-saver').saveAs;
 
 const SASS_FILES = require('./bootstrap');
 const utils = require('./utils');
-
 const templates = require('./templates');
 
 let variables = require('./defaults');
@@ -12,12 +11,14 @@ let variables = require('./defaults');
 
 let Strapping = module.exports = function() {}
 
-Strapping.prototype.initialize = function(workerPath, element) {
-  element = element || document.body;
-  this.sass = new Sass(workerPath);
+Strapping.prototype.initialize = function(options) {
+  if (typeof options === 'string') options = {workerPath: options};
+  options.parent = options.parent || document.body;
+  this.sass = new Sass(options.workerPath);
   Object.keys(SASS_FILES).forEach(filename => {
     this.sass.writeFile(filename, SASS_FILES[filename]);
   });
+  this.heading = options.heading;
   if (!window.Strapping.initialized) {
     utils.addCSS(require('simple-color-picker/src/simple-color-picker.css'));
     utils.addCSS(require('!raw-loader!./styles/styles.css'));
@@ -25,19 +26,26 @@ Strapping.prototype.initialize = function(workerPath, element) {
   window.Strapping.initialized = true;
   this.editor = document.createElement('div');
   this.editor.setAttribute('id', 'StrappingEditor');
-  element.appendChild(this.editor);
+  options.parent.appendChild(this.editor);
   this.compile();
 }
 
-Strapping.prototype.compile = function() {
-  try {
-    this.compileInner();
-  } catch (e) {
-    console.log(e);
-  }
+Strapping.prototype.saveAs = function(type) {
+  type = type || 'css';
+  this.compile((result) => {
+    if (result.status) return;
+    let text = type === 'json' ? JSON.stringify(result.variables, null, 2) : result[type];
+    let blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+    let filename = '';
+    if (type === 'json') filename = 'variables.json';
+    else if (type === 'css') filename = 'bootstrap.css';
+    else if (type === 'sass') filename = '_variables.scss';
+    saveAs(blob, filename);
+  })
 }
 
-Strapping.prototype.compileInner = function() {
+Strapping.prototype.compile = function(callback) {
+  callback = callback || function() {};
   if (this.compiledOnce) {
     Object.keys(variables).forEach(v => {
       variables[v] = utils.unescapeQuotes(document.getElementsByName(v)[0].value);
@@ -50,7 +58,11 @@ Strapping.prototype.compileInner = function() {
   this.sass.compile('@import "_bootstrap";', (result) => {
     utils.removeCSS('bootstrap');
     utils.removeCSS('strapping');
-    this.editor.innerHTML = templates.strapping({vars: variables, error: result.status ? result.message : null});
+    this.editor.innerHTML = templates.strapping({
+      heading: this.heading,
+      vars: variables,
+      error: result.status ? result.message : null,
+    });
     this.compiledOnce = true;
     utils.addCSS(result.text, 'bootstrap');
     let bgColor = window.getComputedStyle( document.body ,null).getPropertyValue('background-color');
@@ -61,6 +73,13 @@ Strapping.prototype.compileInner = function() {
   background-color: ${variables[v]};
 }
     `).join('\n');
+    callback({
+      status: result.status,
+      message: result.message,
+      sass: varFile,
+      css: result.text,
+      variables: variables,
+    });
     varsCSS = '@import "bootstrap/_variables.scss";\n' + varsCSS;
     this.sass.compile(varsCSS, result => {
       if (result.status) throw new Error(result.message);

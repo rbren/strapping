@@ -26,17 +26,24 @@ templates.input = function(name, value) {
 </div>`
 }
 
-templates.strapping = function(opts) {
-  let submit = `
-<div class="row">
-  <div class="col-xs-6">
-    <h2>Strapping!</h2>
-  </div>
-  <div class="col-xs-6 text-right">
-    <h2><input class="btn btn-success" type="submit" value="Set Styles"></h2>
+templates.heading = function() {
+  return `
+<div class="form-group text-right">
+  <div class="btn-toolbar">
+    <input class="btn btn-primary" type="submit" value="Preview">
+    <div class="btn-group">
+      <a class="btn btn-default">Save As:</a>
+      <a class="btn btn-primary" onclick="strapping.saveAs('css')">CSS</a>
+      <a class="btn btn-primary" onclick="strapping.saveAs('sass')">Sass</a>
+      <a class="btn btn-primary" onclick="strapping.saveAs('json')">JSON</a>
+    </div>
   </div>
 </div>`
 
+}
+
+templates.strapping = function(opts) {
+  let heading = opts.heading || templates.heading();
   let links = inputGroups.concat([{label: "Miscellaneous"}]).map(g => `
     <a href="#${g.label}">${g.label}</a>
   `).join('&nbsp;&bull;&nbsp;');
@@ -59,7 +66,7 @@ templates.strapping = function(opts) {
 
   return `
 <form onsubmit="strapping.compile(); return false">
-  ${submit}
+  ${heading}
   ${error}
   ${links}
   ${inputs}

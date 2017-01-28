@@ -7,16 +7,16 @@
     <script src="dist/strapping.min.js"></script>
     <script>
       function start() {
-        strapping.initialize('dist/sass.worker.js', document.getElementById('StrappingContainer'));
+        strapping.initialize({
+          workerPath: 'dist/sass.worker.js',
+          parent: document.getElementById('StrappingContainer'),
+        });
       }
     </script>
     <style>
       #Readme h1,
       #Readme a[href="https://bobby-brennan.github.io/strapping"] {
         display: none;
-      }
-      #Intro {
-        margin-top: 20px;
       }
     </style>
   </head>
