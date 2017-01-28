@@ -12,6 +12,10 @@ You can incorporate Strapping into your project in two ways:
 2. Include Strapping in **production** to allow users, customers, and teams to create themes for your site
 
 ## Usage
+```
+npm install --save strapping
+```
+
 The `dist/` folder comes with two files:
 
 * strapping.min.js
