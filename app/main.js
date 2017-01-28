@@ -25,15 +25,93 @@ const unescapeQuotes = str => {
   return str.replace(/&quot;/g, '"');
 }
 const isColor = name => {
-  return name.indexOf('brand') !== -1 || name.indexOf('color') !== -1 || name.indexOf('gray') !== -1;
+  return name.match(/(brand|color|gray|-bg|-text|-border)/);
 }
 
 const INPUT_GROUPS = [{
   label: "Branding",
-  pattern: /^brand-/,
+  pattern: /^(brand-|body-bg)/,
+}, {
+  label: "State",
+  pattern: /^state-/,
+}, {
+  label: "Buttons",
+  pattern: /^btn-/
+}, {
+  label: "Navbar",
+  pattern: /^navbar-/,
+}, {
+  label: "Alerts",
+  pattern: /^alert-/,
+}, {
+  label: "Inputs",
+  pattern: /^(input-|form-|label-)/,
+}, {
+  label: "Dropdowns",
+  pattern: /^(dropdown-)/,
+}, {
+  label: "Navigation",
+  pattern: /^nav-/,
+}, {
+  label: "Modals",
+  pattern: /^modal-/,
+}, {
+  label: "Tooltips",
+  pattern: /^(tooltip-|popover-)/
+}, {
+  label: "Code",
+  pattern: /^(pre-|code-|kbd-)/,
+}, {
+  label: "Badges",
+  pattern: /^badge-/,
+}, {
+  label: "Breadcrumbs",
+  pattern: /^breadcrumb-/,
+}, {
+  label: "List Groups",
+  pattern: /list-group-/,
+}, {
+  label: "Thumbnails",
+  pattern: /^thumbnail-/,
+}, {
+  label: "Blockquotes",
+  pattern: /^blockquote-/
+}, {
+  label: "Wells",
+  pattern: /^well-/,
+}, {
+  label: "Jumbotron",
+  pattern: /jumbotron-/,
+}, {
+  label: "Tables",
+  pattern: /^table-/,
+}, {
+  label: "Progress Bar",
+  pattern: /^progress-/
+}, {
+  label: "Panel",
+  pattern: /^panel-/,
+}, {
+  label: "Carousel",
+  pattern: /^carousel-/,
+}, {
+  label: "Pagination",
+  pattern: /^(pagination-|pager-)/
 }, {
   label: "Fonts",
-  pattern: /^(font-|headings-)/
+  pattern: /^(font-|headings-|text-color|link-color|link-hover-color)/
+}, {
+  label: "Grays",
+  pattern: /^gray/,
+}, {
+  label: "Sizes",
+  pattern: /^(padding-|line-height|border-radius-)/,
+}, {
+  label: "Z-index",
+  pattern: /^zindex/,
+}, {
+  label: "Grid",
+  pattern: /^(screen-|grid-|container-)/,
 }]
 
 const loadingTemplate = function(opts) {
@@ -157,7 +235,7 @@ Strapping.prototype.showColorPicker = function(elem) {
     height: 100,
   });
   this.picker.onChange(function(color) {
-    input.value = color;
+    input.value = color.toLowerCase();
     elem.querySelector('.input-group-addon').setAttribute('style', 'background-color: ' + color);
   })
 }
