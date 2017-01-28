@@ -30,5 +30,8 @@
     "sass.js": "^0.10.3",
     "simple-color-picker": "^0.1.2",
     "webpack": "^2.2.0"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^4.0.1"
   }
 }

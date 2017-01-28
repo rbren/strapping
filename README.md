@@ -12,12 +12,20 @@ You can incorporate Strapping into your project in two ways:
 2. Include Strapping in **production** to allow users, customers, and teams to create themes for your site
 
 ## Usage
+The `dist/` folder comes with two files:
+
+* strapping.min.js
+* sass.worker.js - from [sass.js](http://github.com/medialize/sass.js)
+
+sass.worker.js is rather large (~3MB), so it's only loaded if Strapping
+is initialized.
+
 ```html
 <html>
   <head>
-    <script src="strapping.min.js"></script>
+    <script src="path/to/strapping.min.js"></script>
   </head>
-  <body onload="strapping.initialize()">
+  <body onload="strapping.initialize('path/to/sass.worker.js')">
     <div class="alert alert-info">
       Customize Me!
     </div>

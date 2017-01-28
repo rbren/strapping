@@ -1,5 +1,5 @@
-require('./index.html');
 const Sass = require('sass.js/dist/sass.js');
+window.Sass = Sass;
 const ColorPicker = require('simple-color-picker');
 
 const SASS_FILES = require('./bootstrap');
@@ -10,17 +10,16 @@ const templates = require('./templates');
 let variables = require('./defaults');
 
 
-let Strapping = module.exports = function() {
-  this.sass = new Sass('dist/sass.worker.js');
+let Strapping = module.exports = function() {}
+
+Strapping.prototype.initialize = function(workerPath) {
+  this.sass = new Sass(workerPath);
   Object.keys(SASS_FILES).forEach(filename => {
     this.sass.writeFile(filename, SASS_FILES[filename]);
-  })
-}
-
-Strapping.prototype.initialize = function() {
+  });
   if (!window.Strapping.initialized) {
     utils.addCSS(require('simple-color-picker/src/simple-color-picker.css'));
-    utils.addCSS(require('!raw-loader!./styles.css'));
+    utils.addCSS(require('!raw-loader!./styles/styles.css'));
   }
   window.Strapping.initialized = true;
   this.editor = document.createElement('div');

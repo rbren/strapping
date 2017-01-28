@@ -1,11 +1,13 @@
 var webpack = require("webpack");
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+
 module.exports = {
   entry: {
-    "app": "./app/main",
+    "strapping": "./app/main",
   },
   output: {
     path: __dirname,
-    filename: "./static/dist/[name].bundle.js"
+    filename: "./static/dist/[name].min.js"
   },
   resolve: {
     extensions: ['.js', '.ts']
@@ -21,5 +23,7 @@ module.exports = {
     }]
   },
   plugins: [
-  ]
+    new CopyWebpackPlugin([{ from: 'node_modules/sass.js/dist/sass.worker.js', to: './static/dist/sass.worker.js' }]),
+
+  ],
 }
