@@ -115,12 +115,12 @@ const INPUT_GROUPS = [{
 }]
 
 const loadingTemplate = function(opts) {
-  return `<h2>Loading</h2>`
+  return `<h4><a target="_blank" href="https://github.com/bobby-brennan/strapping">Strapping!</a> is loading...</h4>`
 }
 
 const inputTemplate = function(name, value) {
   let input = `
-<input class="input-xs form-control" type="text" value="${escapeQuotes(value)}" name="${name}">`
+<input class="input-sm form-control" type="text" value="${escapeQuotes(value)}" name="${name}">`
 
   if (isColor(name)) {
     input = `
@@ -140,9 +140,19 @@ const inputTemplate = function(name, value) {
 
 const strappingTemplate = function(opts) {
   let submit = `
-<div class="form-group">
-  <input class="btn btn-success" type="submit" value="Set Styles">
+<div class="row">
+  <div class="col-xs-6">
+    <h2>Strapping!</h2>
+  </div>
+  <div class="col-xs-6 text-right">
+    <h2><input class="btn btn-success" type="submit" value="Set Styles"></h2>
+  </div>
 </div>`
+
+  let links = INPUT_GROUPS.map(g => `
+    <a href="#${g.label}">${g.label}</a>
+  `).join('&nbsp;&bull;&nbsp;');
+  links = `<p>${links}</p>`;
 
   let error = '';
   if (opts.error) error = `
@@ -153,7 +163,8 @@ const strappingTemplate = function(opts) {
   INPUT_GROUPS.forEach(g => {
     let matchingInputs = Object.keys(opts.vars).filter(k => k.substring(1).match(g.pattern));
     addedInputs = addedInputs.concat(matchingInputs);
-    inputs += `<h2>${g.label}</h2>` + matchingInputs.map(k => inputTemplate(k, opts.vars[k])).join('\n');
+    inputs += `<a name="${g.label}"></a><h2>${g.label}</h2>`
+          + matchingInputs.map(k => inputTemplate(k, opts.vars[k])).join('\n');
   })
   let unmatchedInputs = Object.keys(opts.vars).filter(k => addedInputs.indexOf(k) === -1);
   inputs += `<h2>Miscellaneous</h2>` + unmatchedInputs.map(k => inputTemplate(k, opts.vars[k])).join('\n');
@@ -162,6 +173,7 @@ const strappingTemplate = function(opts) {
 <form onsubmit="strapping.compile(); return false">
   ${submit}
   ${error}
+  ${links}
   ${inputs}
 </form>`
 }
