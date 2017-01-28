@@ -37,27 +37,32 @@ is initialized.
 </html>
 ```
 
-This will load Strapping in a fixed-position side column (like you can see on the left now).
-There can edit your bootstrap variables.  Clicking **Set Styles** will re-compile
-Bootstrap and apply the styles to the page.
-
-You can save the resulting CSS or Sass to a local file (e.g. if you're working on your own site).
-If you're using Strapping in production to allow your users to customize your UI, you'll probably
-want to save the result to a CDN or database.
-
-```
-strapping.onCompiled(function(result) {
-  console.log(result.status);    // 0 if everything went OK
-  console.log(result.message);   // Check this if status !== 0
-  console.log(result.variables); // A JavaScript object mapping variables to values
-  console.log(result.css);       // Full Bootstrap CSS
-  console.log(result.scss);      // A _variables.scss file for inclusion in Bootstrap
-  strapping.saveAs('css');       // Show the "Save As" dialog in the browser
-});
-```
-
 ## Customization
 
+### Saving
+By default, Strapping provides buttons for saving the resulting CSS or Sass to a local file.
+If you're using Strapping in production to allow your users to customize your UI, you'll probably
+want to save the result to a CDN or database. To do this, you can replace the default buttons
+with your own:
+```
+window.save = function(result) {
+  if (result.status) throw new Error(result.message);
+  console.log(result.css);
+  console.log(result.sass);
+  console.log(result.json);
+  // Pass the result to S3, localStorage, ...
+}
+
+strapping.initialize({
+  workerPath: 'path/to/sass.worker.js',
+  heading: `
+<a onclick="strapping.compile()">Preview</a>
+<a onclick="strapping.compile(save)">Save</a>
+  `,
+})
+```
+
+### Position and Styles
 By default Strapping will just append itself to the document body. You can also pass
 in a parent element:
 
