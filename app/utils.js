@@ -24,3 +24,23 @@ utils.removeCSS = id => {
   if (elem) elem.parentNode.removeChild(elem);
 }
 
+utils.getSassFromVariables = variables => {
+  let varFile = `$bootstrap-sass-asset-helper: false !default;\n`;
+  varFile += Object.keys(variables).map(v => v + ': ' + variables[v] + ' !default;').join('\n');
+  return varFile;
+}
+
+utils.getVariablesFromSass = scss => {
+  let vars = {}
+  scss.split('\n')
+    .map(l => l.match(/^(\$\S+):\s*(.*)\s*!default;.*$/))
+    .filter(l => l)
+    .map(match => {
+      return {name: match[1], value: match[2]}
+    })
+    .forEach(v => {
+      vars[v.name] = v.value;
+    })
+
+  return vars;
+}

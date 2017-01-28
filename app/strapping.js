@@ -45,17 +45,38 @@ Strapping.prototype.saveAs = function(type) {
   })
 }
 
+Strapping.prototype.load = function(str) {
+  if (str instanceof window.File) {
+    let reader = new FileReader();
+    reader.onload = () => {
+      this.load(reader.result);
+    }
+    reader.readAsText(str);
+    return;
+  }
+
+  let vars = null;
+  if (typeof str === 'object') {
+    vars = str;
+  } else {
+    try {
+      vars = JSON.parse(str);
+    } catch (e) {}
+    if (!vars) vars = utils.getVariablesFromSass(str);
+  }
+
+  for (let key in vars) {
+    variables[key] = vars[key];
+  }
+  this.compile(null, true);
+}
+
 Strapping.prototype.setTheme = function(themeName) {
   let theme = themes.filter(t => t.name === themeName)[0];
-  theme.scss.split('\n')
-    .map(l => l.match(/^(\$\S+):\s*(.*)\s*!default;.*$/))
-    .filter(l => l)
-    .map(match => {
-      return {name: match[1], value: match[2]}
-    })
-    .forEach(v => {
-      variables[v.name] = v.value;
-    })
+  let vars = utils.getVariablesFromSass(theme.scss);
+  for (let key in vars) {
+    variables[key] = vars[key];
+  }
   this.compile(null, true);
 }
 
@@ -66,8 +87,7 @@ Strapping.prototype.compile = function(callback, skipInputs) {
       variables[v] = utils.unescapeQuotes(document.getElementsByName(v)[0].value);
     });
   }
-  let varFile = `$bootstrap-sass-asset-helper: false !default\n`;
-  varFile += Object.keys(variables).map(v => v + ': ' + variables[v] + ';').join('\n');
+  let varFile = utils.getSassFromVariables(variables);
   this.sass.writeFile('bootstrap/_variables.scss', varFile)
   this.editor.innerHTML = templates.loading();
   this.sass.compile('@import "_bootstrap";', (result) => {

@@ -29,13 +29,20 @@ templates.input = function(name, value) {
 
 templates.heading = function() {
   return `
-<div class="form-group text-right">
+<div class="form-group">
   <div class="btn-toolbar">
     <input class="btn btn-primary" type="submit" value="Preview">
     <div class="btn-group">
-      <a class="btn btn-primary" onclick="strapping.saveAs('css')">CSS</a>
-      <a class="btn btn-primary" onclick="strapping.saveAs('sass')">Sass</a>
-      <a class="btn btn-primary" onclick="strapping.saveAs('json')">JSON</a>
+      <label for="StrappingLoadInput"><a class="btn btn-primary">Load</a></label>
+      <input style="display:none" id="StrappingLoadInput" type="file" onchange="strapping.load(this.files[0])">
+    </div>
+    <div class="btn-group hover-dropdown">
+      <a class="btn btn-primary dropdown-toggle">Save <span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li><a onclick="strapping.saveAs('css')">CSS</a></li>
+        <li><a onclick="strapping.saveAs('sass')">Sass</a></li>
+        <li><a onclick="strapping.saveAs('json')">JSON</a></li>
+      </ul>
     </div>
   </div>
 </div>`

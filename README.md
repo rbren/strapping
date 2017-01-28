@@ -62,6 +62,17 @@ strapping.initialize({
 })
 ```
 
+### Loading
+You can use `strapping.load()` to set the theme using saved JSON or Sass:
+
+window.save = function((result) => {
+  localStorage.setItem('variables', JSON.stringify(result.json))
+})
+
+let saved = localStorage.getItem('variables');
+if (saved) saved = JSON.parse(saved);
+strapping.load(saved);
+
 ### Position and Styles
 By default Strapping will just append itself to the document body. You can also pass
 in a parent element:

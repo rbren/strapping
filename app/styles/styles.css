@@ -1,3 +1,8 @@
 #StrappingEditor .color-input-group .input-group-addon {
   min-width: 50px;
 }
+
+#StrappingEditor .hover-dropdown:hover .dropdown-menu {
+  display: block;
+  margin-top: 0;
+}
