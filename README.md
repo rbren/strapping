@@ -8,7 +8,7 @@ colors, sizes, and fonts.
 
 You can incorporate Strapping into your project in two ways:
 
-1. Include Strapping in **development** mode to help you customize your site's styles
+1. Include Strapping in **development** to help you customize your site's styles
 2. Include Strapping in **production** to allow users, customers, and teams to create themes for your site
 
 ## Usage
