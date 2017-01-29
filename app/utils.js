@@ -24,6 +24,18 @@ utils.removeCSS = id => {
   if (elem) elem.parentNode.removeChild(elem);
 }
 
+utils.replaceLessVars = less => {
+  let vars = {};
+  for (let key in less) {
+    let val = less[key];
+    if (val.value) val = val.value;
+    val = val.replace(/@/g, '$').replace(/spin\(([^,]+),[^\)]+\)/, '$1');
+    let newKey = key.replace('@', '$');
+    vars[newKey] = val;
+  }
+  return vars;
+}
+
 utils.getSassFromVariables = variables => {
   let varFile = `$bootstrap-sass-asset-helper: false !default;\n`;
   varFile += Object.keys(variables).map(v => v + ': ' + variables[v] + ' !default;').join('\n');

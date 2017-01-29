@@ -60,6 +60,8 @@ Strapping.prototype.load = function(str, noCompile) {
   } else {
     try {
       vars = JSON.parse(str);
+      if (vars.vars) vars = utils.replaceLessVars(vars.vars);
+      else if (vars.bootstrap && vars.bootstrap.vars) vars = utils.replaceLessVars(vars.bootstrap.vars);
     } catch (e) {}
     if (!vars) vars = utils.getVariablesFromSass(str);
   }
