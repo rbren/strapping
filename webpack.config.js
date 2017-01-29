@@ -23,7 +23,12 @@ module.exports = {
     }]
   },
   plugins: [
-    new CopyWebpackPlugin([{ from: 'node_modules/sass.js/dist/sass.worker.js', to: './static/dist/sass.worker.js' }]),
-
+    new CopyWebpackPlugin([{
+      from: 'node_modules/sass.js/dist/sass.worker.js',
+      to: './static/dist/sass.worker.js',
+    }, {
+      from: 'app/styles/bootstrap.css',
+      to: './static/dist/bootstrap.css',
+    }]),
   ],
 }

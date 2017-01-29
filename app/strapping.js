@@ -7,13 +7,12 @@ const utils = require('./utils');
 const templates = require('./templates');
 const themes = require('./themes');
 
-let variables = require('./defaults');
-
-
 let Strapping = module.exports = function() {}
 
 Strapping.prototype.initialize = function(options) {
   if (typeof options === 'string') options = {workerPath: options};
+  this.variables = options.variables || {};
+  if (!options.variables) this.load(themes.filter(t => t.name === 'Strapping')[0].scss, true);
   options.parent = options.parent || document.body;
   this.sass = new Sass(options.workerPath);
   Object.keys(SASS_FILES).forEach(filename => {
@@ -45,7 +44,7 @@ Strapping.prototype.saveAs = function(type) {
   })
 }
 
-Strapping.prototype.load = function(str) {
+Strapping.prototype.load = function(str, noCompile) {
   if (str instanceof window.File) {
     let reader = new FileReader();
     reader.onload = () => {
@@ -66,16 +65,16 @@ Strapping.prototype.load = function(str) {
   }
 
   for (let key in vars) {
-    variables[key] = vars[key];
+    this.variables[key] = vars[key];
   }
-  this.compile(null, true);
+  if (!noCompile) this.compile(null, true);
 }
 
 Strapping.prototype.setTheme = function(themeName) {
   let theme = themes.filter(t => t.name === themeName)[0];
   let vars = utils.getVariablesFromSass(theme.scss);
   for (let key in vars) {
-    variables[key] = vars[key];
+    this.variables[key] = vars[key];
   }
   this.compile(null, true);
 }
@@ -83,11 +82,11 @@ Strapping.prototype.setTheme = function(themeName) {
 Strapping.prototype.compile = function(callback, skipInputs) {
   callback = callback || function() {};
   if (!skipInputs && this.compiledOnce) {
-    Object.keys(variables).forEach(v => {
-      variables[v] = utils.unescapeQuotes(document.getElementsByName(v)[0].value);
+    Object.keys(this.variables).forEach(v => {
+      this.variables[v] = utils.unescapeQuotes(document.getElementsByName(v)[0].value);
     });
   }
-  let varFile = utils.getSassFromVariables(variables);
+  let varFile = utils.getSassFromVariables(this.variables);
   this.sass.writeFile('bootstrap/_variables.scss', varFile)
   this.editor.innerHTML = templates.loading();
   this.sass.compile('@import "_bootstrap";', (result) => {
@@ -95,7 +94,7 @@ Strapping.prototype.compile = function(callback, skipInputs) {
     utils.removeCSS('strapping');
     this.editor.innerHTML = templates.strapping({
       heading: this.heading,
-      vars: variables,
+      vars: this.variables,
       error: result.status ? result.message : null,
     });
     this.compiledOnce = true;
@@ -103,9 +102,9 @@ Strapping.prototype.compile = function(callback, skipInputs) {
     let bgColor = window.getComputedStyle( document.body ,null).getPropertyValue('background-color');
     this.editor.setAttribute('style', 'background-color: ' + bgColor);
 
-    let varsCSS = Object.keys(variables).filter(v => utils.isColor(v)).map(v => `
+    let varsCSS = Object.keys(this.variables).filter(v => utils.isColor(v)).map(v => `
 #StrappingEditor input[name="${utils.escapeQuotes(v)}"] ~ .input-group-addon {
-  background-color: ${variables[v]};
+  background-color: ${this.variables[v]};
 }
     `).join('\n');
     callback({
@@ -113,7 +112,7 @@ Strapping.prototype.compile = function(callback, skipInputs) {
       message: result.message,
       sass: varFile,
       css: result.text,
-      variables: variables,
+      variables: this.variables,
     });
     varsCSS = '@import "bootstrap/_variables.scss";\n' + varsCSS;
     this.sass.compile(varsCSS, result => {

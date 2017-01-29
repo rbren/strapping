@@ -1,5 +1,15 @@
 module.exports = themes = [
 {
+  name: "Default",
+  description: "The default Bootstrap settings",
+  scss: require('bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss'),
+},
+{
+  name: "Strapping",
+  description: "The default theme for Strapping",
+  scss: require('./styles/_variables.scss'),
+},
+{
   name: "Cerulean",
   description: "A calm blue sky",
   thumbnail: "https://bootswatch.com/cerulean/thumbnail.png",
