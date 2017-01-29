@@ -29,12 +29,6 @@ module.exports = {
     }, {
       from: 'app/styles/bootstrap.css',
       to: './static/dist/bootstrap.css',
-    }, {
-      from: 'static/dist/strapping.min.js',
-      to: 'dist/',
-    }, {
-      from: 'static/dist/sass.worker.js',
-      to: 'dist/',
     }]),
   ],
 }
