@@ -63,7 +63,9 @@ templates.themes = function() {
 
 templates.strapping = function(opts) {
   let heading = opts.heading || templates.heading();
-  let links = inputGroups.concat([{label: "Miscellaneous"}]).map(g => `
+  let links = `
+    <label>Jump to:</label><br>
+  ` + inputGroups.concat([{label: "Miscellaneous"}]).map(g => `
     <a href="#${g.label}">${g.label}</a>
   `).join('&nbsp;&bull;&nbsp;');
   links = `<p>${links}</p>`;
