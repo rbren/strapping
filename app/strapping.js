@@ -138,5 +138,8 @@ Strapping.prototype.showColorPicker = function(elem) {
     }
     this.picker.init = true;
   })
+  input.addEventListener('change', (evt) => {
+    if (evt.target.value !== this.picker.color) this.picker.setColor(evt.target.value);
+  })
 }
 
