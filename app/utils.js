@@ -36,7 +36,7 @@ utils.getVariablesFromSass = scss => {
     .map(l => l.match(/^(\$\S+):\s*(.*)\s*!default;.*$/))
     .filter(l => l)
     .map(match => {
-      return {name: match[1], value: match[2]}
+      return {name: match[1], value: match[2].trim()}
     })
     .forEach(v => {
       vars[v.name] = v.value;
