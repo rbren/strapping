@@ -139,7 +139,10 @@ Strapping.prototype.showColorPicker = function(elem) {
     this.picker.init = true;
   })
   input.addEventListener('change', (evt) => {
-    if (evt.target.value !== this.picker.color) this.picker.setColor(evt.target.value);
+    let color = evt.target.value;
+    if (color && color !== this.picker.color && color.match(/^#\w+/)) {
+      this.picker.setColor(color);
+    }
   })
 }
 
