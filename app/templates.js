@@ -51,7 +51,7 @@ templates.heading = function() {
 
 templates.themes = function() {
   return `
-<h2>Themes</h2>
+<h2>Themes <small><a href="https://bootswatch.com/" target="_blank">by Bootswatch</a></h2>
 <p>
   <span class="text-danger">Warning:</span>
   Setting a theme will overwrite your current settings.
