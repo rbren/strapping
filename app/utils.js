@@ -56,3 +56,9 @@ utils.getVariablesFromSass = scss => {
 
   return vars;
 }
+
+utils.getSassFromFonts = fonts => {
+  return fonts.map(font => `
+@import url('https://fonts.googleapis.com/css?family=${font.family}:${font.variants.join(",")}');
+  `.trim()).join('\n');
+}

@@ -1,4 +1,7 @@
 const INPUT_GROUPS = module.exports = [{
+  label: "Fonts",
+  pattern: /^(font-|headings-|text-color|link-color|link-hover-color)/
+}, {
   label: "Branding",
   pattern: /^(brand-|body-bg)/,
 }, {
@@ -67,9 +70,6 @@ const INPUT_GROUPS = module.exports = [{
 }, {
   label: "Pagination",
   pattern: /^(pagination-|pager-)/
-}, {
-  label: "Fonts",
-  pattern: /^(font-|headings-|text-color|link-color|link-hover-color)/
 }, {
   label: "Grays",
   pattern: /^gray/,
