@@ -6,3 +6,11 @@
   display: block;
   margin-top: 0;
 }
+
+#Preview {
+  margin-top: 100px;
+}
+
+a {
+  cursor: pointer;
+}
