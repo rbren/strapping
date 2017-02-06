@@ -101,12 +101,11 @@ strapping.initialize({
 </code></pre><h3 id="loading">Loading</h3>
 <p>You can use <code>strapping.load()</code> to set the theme using saved JSON or Sass:</p>
 <pre><code>window.save = function((result) =&gt; {
-  localStorage.setItem(&#39;variables&#39;, JSON.stringify(result.json))
+  localStorage.setItem(&#39;_variables.scss&#39;, result.sass);
 })
 
-let saved = localStorage.getItem(&#39;variables&#39;);
-if (saved) saved = JSON.parse(saved);
-strapping.load(saved);
+let saved = localStorage.getItem(&#39;_variables.scss&#39;);
+if (saved) strapping.load(saved);
 </code></pre><h3 id="position-and-styles">Position and Styles</h3>
 <p>By default Strapping will just append itself to the document body. You can also pass
 in a parent element:</p>
