@@ -4,7 +4,7 @@ const themes = require('./themes');
 const templates = module.exports = {};
 
 templates.loading = function(opts) {
-  return `<h4><a target="_blank" href="https://github.com/bobby-brennan/strapping">Strapping!</a> is building your theme...</h4>`
+  return `<h4>Building your theme...</h4>`
 }
 
 templates.input = function(name, value) {

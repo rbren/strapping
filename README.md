@@ -9,7 +9,7 @@ colors, sizes, and fonts.
 You can incorporate Strapping into your project in two ways:
 
 1. Include Strapping in **development** to help you customize your site's styles
-2. Include Strapping in **production** to allow users, customers, and teams to create themes for your site
+2. Include Strapping in **production** to allow users and teams to create themes for your site
 
 ## Usage
 ```
@@ -65,6 +65,7 @@ strapping.initialize({
 ### Loading
 You can use `strapping.load()` to set the theme using saved JSON or Sass:
 
+```
 window.save = function((result) => {
   localStorage.setItem('variables', JSON.stringify(result.json))
 })
@@ -72,6 +73,7 @@ window.save = function((result) => {
 let saved = localStorage.getItem('variables');
 if (saved) saved = JSON.parse(saved);
 strapping.load(saved);
+```
 
 ### Position and Styles
 By default Strapping will just append itself to the document body. You can also pass
