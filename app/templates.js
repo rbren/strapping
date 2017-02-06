@@ -51,7 +51,7 @@ templates.heading = function() {
 
 templates.themes = function() {
   return `
-<h2>Themes</h2>
+<h2>Themes <small><a href="https://bootswatch.com/" target="_blank">by Bootswatch</a></h2>
 <p>
   <span class="text-danger">Warning:</span>
   Setting a theme will overwrite your current settings.
@@ -59,6 +59,29 @@ templates.themes = function() {
   ` + themes.map(theme => `
 <a href="#" onclick="strapping.setTheme('${theme.name}')">${theme.name}</a> - ${theme.description}
   `).join('<br>\n');
+}
+
+templates.fonts = function(fonts, addedFonts) {
+  const fontItem = font => `<li><a onclick="strapping.addFont('${font.family}')">${font.family}</a></li>`
+  const addedFontItem = font => `
+<li>
+  <span style='font-family: "${font.family}"'>${font.family}</span>
+  &nbsp;
+  <a class="text-danger" onclick="strapping.removeFont('${font.family}')">&times;</a>
+</li>
+  `;
+  return `
+<div class="dropdown form-group">
+  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">Add Fonts <span class="caret"></span></a>
+  <ul class="dropdown-menu">
+    ${fonts.map(f => fontItem(f)).join('\n')}
+  </ul>
+</div>
+<p>Preview fonts on <a href="https://fonts.google.com/" target="_blank">fonts.google.com</a></p>
+<ul>
+  ${addedFonts.map(f => addedFontItem(f)).join('\n')}
+</ul>
+  `
 }
 
 templates.strapping = function(opts) {
@@ -70,19 +93,17 @@ templates.strapping = function(opts) {
   `).join('&nbsp;&bull;&nbsp;');
   links = `<p>${links}</p>`;
 
-  let themes = templates.themes();
-
-  let error = '';
-  if (opts.error) error = `
-<div class="alert alert-warning">${opts.error}</div>`
+  let error = opts.error ? `<div class="alert alert-warning">${opts.error}</div>` : '';
 
   let addedInputs = [];
   let inputs = '';
   inputGroups.forEach(g => {
     let matchingInputs = Object.keys(opts.vars).filter(k => k.substring(1).match(g.pattern));
     addedInputs = addedInputs.concat(matchingInputs);
-    inputs += `<a name="${g.label}"></a><h2>${g.label}</h2>`
-          + matchingInputs.map(k => templates.input(k, opts.vars[k])).join('\n');
+    let inputGroupHTML = `<a name="${g.label}"></a><h2>${g.label}</h2>`;
+    if (g.label === 'Fonts') inputGroupHTML += templates.fonts(opts.fonts, opts.addedFonts);
+    inputGroupHTML += matchingInputs.map(k => templates.input(k, opts.vars[k])).join('\n');
+    inputs += inputGroupHTML;
   })
   let unmatchedInputs = Object.keys(opts.vars).filter(k => addedInputs.indexOf(k) === -1);
   inputs += `<a name="Miscellaneous"></a><h2>Miscellaneous</h2>` + unmatchedInputs.map(k => templates.input(k, opts.vars[k])).join('\n');
@@ -92,8 +113,9 @@ templates.strapping = function(opts) {
   ${heading}
   ${error}
   ${links}
-  ${themes}
+  ${templates.themes()}
   ${inputs}
 </form>`
 }
+
 

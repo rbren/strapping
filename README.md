@@ -2,8 +2,8 @@
 
 [Check out the demo](https://bobby-brennan.github.io/strapping)
 
-Strapping is a web plugin for generating custom [Bootstrap](http://getbootstrap.com) themes.
-Including Strapping on any page that uses Bootstrap CSS will allow you to live-edit the pages
+Strapping is a web plugin for live-editing custom [Bootstrap](http://getbootstrap.com) themes.
+Include Strapping on any page that uses Bootstrap CSS, and use the toolbar to modify the page's
 colors, sizes, and fonts.
 
 You can incorporate Strapping into your project in two ways:

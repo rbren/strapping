@@ -12,6 +12,7 @@ let Strapping = module.exports = function() {}
 Strapping.prototype.initialize = function(options) {
   if (typeof options === 'string') options = {workerPath: options};
   this.variables = options.variables || {};
+  this.addedFonts = [];
   if (!options.variables) this.load(themes.filter(t => t.name === 'Strapping')[0].scss, true);
   options.parent = options.parent || document.body;
   this.sass = new Sass(options.workerPath);
@@ -27,6 +28,7 @@ Strapping.prototype.initialize = function(options) {
   this.editor = document.createElement('div');
   this.editor.setAttribute('id', 'StrappingEditor');
   options.parent.appendChild(this.editor);
+  this.loadFonts();
   this.compile();
 }
 
@@ -81,6 +83,28 @@ Strapping.prototype.setTheme = function(themeName) {
   this.compile(null, true);
 }
 
+Strapping.prototype.drawEditor = function(err) {
+  this.editor.innerHTML = templates.strapping({
+    heading: this.heading,
+    vars: this.variables,
+    fonts: this.fonts,
+    addedFonts: this.addedFonts,
+    error: err,
+  });
+  let bgColor = window.getComputedStyle( document.body ,null).getPropertyValue('background-color');
+  this.editor.setAttribute('style', 'background-color: ' + bgColor);
+  let varsCSS = Object.keys(this.variables).filter(v => utils.isColor(v)).map(v => `
+#StrappingEditor input[name="${utils.escapeQuotes(v)}"] ~ .input-group-addon {
+background-color: ${this.variables[v]};
+}
+  `).join('\n');
+  varsCSS = '@import "bootstrap/_variables.scss";\n' + varsCSS;
+  this.sass.compile(varsCSS, result => {
+    if (result.status) throw new Error(result.message);
+    utils.addCSS(result.text, 'strapping');
+  })
+}
+
 Strapping.prototype.compile = function(callback, skipInputs) {
   callback = callback || function() {};
   if (!skipInputs && this.compiledOnce) {
@@ -88,27 +112,15 @@ Strapping.prototype.compile = function(callback, skipInputs) {
       this.variables[v] = utils.unescapeQuotes(document.getElementsByName(v)[0].value);
     });
   }
-  let varFile = utils.getSassFromVariables(this.variables);
+  let varFile = utils.getSassFromFonts(this.addedFonts) + '\n' + utils.getSassFromVariables(this.variables);
   this.sass.writeFile('bootstrap/_variables.scss', varFile)
   this.editor.innerHTML = templates.loading();
   this.sass.compile('@import "_bootstrap";', (result) => {
     utils.removeCSS('bootstrap');
     utils.removeCSS('strapping');
-    this.editor.innerHTML = templates.strapping({
-      heading: this.heading,
-      vars: this.variables,
-      error: result.status ? result.message : null,
-    });
-    this.compiledOnce = true;
     utils.addCSS(result.text, 'bootstrap');
-    let bgColor = window.getComputedStyle( document.body ,null).getPropertyValue('background-color');
-    this.editor.setAttribute('style', 'background-color: ' + bgColor);
-
-    let varsCSS = Object.keys(this.variables).filter(v => utils.isColor(v)).map(v => `
-#StrappingEditor input[name="${utils.escapeQuotes(v)}"] ~ .input-group-addon {
-  background-color: ${this.variables[v]};
-}
-    `).join('\n');
+    this.drawEditor(result.status ? result.message : null);
+    this.compiledOnce = true;
     callback({
       status: result.status,
       message: result.message,
@@ -116,11 +128,6 @@ Strapping.prototype.compile = function(callback, skipInputs) {
       css: result.text,
       variables: this.variables,
     });
-    varsCSS = '@import "bootstrap/_variables.scss";\n' + varsCSS;
-    this.sass.compile(varsCSS, result => {
-      if (result.status) throw new Error(result.message);
-      utils.addCSS(result.text, 'strapping');
-    })
   })
 }
 
@@ -148,3 +155,29 @@ Strapping.prototype.showColorPicker = function(elem) {
   })
 }
 
+const FONTS_URL = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyCIPThYcVkXtTiNbDPBD1FdvKbPNX7d3iw";
+
+Strapping.prototype.loadFonts = function() {
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.onreadystatechange = () => {
+    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+      this.fonts = JSON.parse(xmlHttp.responseText).items;
+      this.drawEditor();
+    }
+  }
+  xmlHttp.open("GET", FONTS_URL, true);
+  xmlHttp.send(null);
+}
+
+Strapping.prototype.addFont = function(family) {
+  let newFont = this.fonts.filter(f => f.family === family)[0];
+  if (!newFont) throw new Error("Font " + family + " not found");
+  if (this.addedFonts.indexOf(newFont) !== -1) return;
+  this.addedFonts.push(newFont);
+  this.drawEditor();
+}
+
+Strapping.prototype.removeFont = function(family) {
+  this.addedFonts = this.addedFonts.filter(f => f.family !== family);
+  this.drawEditor();
+}
