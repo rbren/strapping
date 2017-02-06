@@ -1,4 +1,4 @@
-module.exports = themes = [
+const themes = module.exports = [
 {
   name: "Default",
   description: "The default Bootstrap settings",
