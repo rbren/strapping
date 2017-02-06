@@ -66,7 +66,7 @@ Strapping.prototype.load = function(str, noCompile) {
     } catch (e) {}
   }
   if (jsonObj) {
-    if (jsonObj.vars) vars = utils.replaceLessVars(vars.vars);
+    if (jsonObj.vars) vars = utils.replaceLessVars(jsonObj.vars);
     else if (jsonObj.bootstrap && jsonObj.bootstrap.vars) vars = utils.replaceLessVars(jsonObj.bootstrap.vars);
     if (jsonObj.fonts) {
       this.addedFonts = [];
