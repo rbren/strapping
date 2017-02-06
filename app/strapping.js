@@ -57,15 +57,26 @@ Strapping.prototype.load = function(str, noCompile) {
   }
 
   let vars = null;
+  let jsonObj = null;
   if (typeof str === 'object') {
     vars = str;
   } else {
     try {
-      vars = JSON.parse(str);
-      if (vars.vars) vars = utils.replaceLessVars(vars.vars);
-      else if (vars.bootstrap && vars.bootstrap.vars) vars = utils.replaceLessVars(vars.bootstrap.vars);
+      jsonObj = JSON.parse(str);
     } catch (e) {}
-    if (!vars) vars = utils.getVariablesFromSass(str);
+  }
+  if (jsonObj) {
+    if (jsonObj.vars) vars = utils.replaceLessVars(vars.vars);
+    else if (jsonObj.bootstrap && jsonObj.bootstrap.vars) vars = utils.replaceLessVars(jsonObj.bootstrap.vars);
+    if (jsonObj.fonts) {
+      this.addedFonts = [];
+      Object.keys(jsonObj.fonts).forEach(fam => this.addFont(fam));
+    }
+  } else if (!vars) {
+    vars = utils.getVariablesFromSass(str);
+    this.addedFonts = [];
+    let sassFonts = utils.getFontsFromSass(str);
+    sassFonts.forEach(f => this.addFont(f));
   }
 
   for (let key in vars) {

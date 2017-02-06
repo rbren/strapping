@@ -62,3 +62,9 @@ utils.getSassFromFonts = fonts => {
 @import url('https://fonts.googleapis.com/css?family=${font.family}:${font.variants.join(",")}');
   `.trim()).join('\n');
 }
+
+utils.getFontsFromSass = scss => {
+  let lines = scss.split('\n');
+  let fontLines = lines.map(l => l.match(/^@import url\(.*fonts.googleapis.com.css.family=([^:]+):(.*)['"]\)/)).filter(m => m);
+  return fontLines.map(l => l[1]);
+}
