@@ -19,9 +19,14 @@
     "url": "https://github.com/bobby-brennan/strapping/issues"
   },
   "homepage": "https://github.com/bobby-brennan/strapping#readme",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.22.0",
     "bootstrap-sass": "^3.3.7",
     "bootswatch": "^3.3.7",
+    "copy-webpack-plugin": "^4.0.1",
     "extract-loader": "^0.1.0",
     "file-loader": "^0.9.0",
     "file-saver": "^1.3.3",
@@ -31,8 +36,5 @@
     "sass.js": "^0.10.3",
     "simple-color-picker": "^0.1.2",
     "webpack": "^2.2.0"
-  },
-  "devDependencies": {
-    "copy-webpack-plugin": "^4.0.1"
   }
 }

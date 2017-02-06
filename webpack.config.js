@@ -20,6 +20,9 @@ module.exports = {
     }, {
       test: /\.html$/,
       loader: 'file-loader?name=static/[name].[ext]&outputPath=static/!extract-loader!html-loader?interpolate=true',
+    }, {
+      test: /\.js$/,
+      loader: 'babel-loader?presets[]=es2015',
     }]
   },
   plugins: [
