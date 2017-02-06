@@ -12,6 +12,7 @@ let Strapping = module.exports = function() {}
 Strapping.prototype.initialize = function(options) {
   if (typeof options === 'string') options = {workerPath: options};
   this.variables = options.variables || {};
+  this.fields = options.fields;
   this.addedFonts = [];
   if (!options.variables) this.load(themes.filter(t => t.name === 'Strapping')[0].scss, true);
   options.parent = options.parent || document.body;
@@ -98,6 +99,7 @@ Strapping.prototype.drawEditor = function(err) {
   this.editor.innerHTML = templates.strapping({
     heading: this.heading,
     vars: this.variables,
+    fields: this.fields,
     fonts: this.fonts,
     addedFonts: this.addedFonts,
     error: err,

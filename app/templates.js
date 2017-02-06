@@ -84,29 +84,50 @@ templates.fonts = function(fonts, addedFonts) {
   `
 }
 
+const inputMatchesFields = (name, fields) => {
+  if (!fields) return true;
+  let matches = fields.filter(pattern => {
+    if (typeof pattern === 'string') return name === pattern;
+    else return name.match(pattern);
+  })
+  return !!matches.length;
+}
+
 templates.strapping = function(opts) {
   let heading = opts.heading || templates.heading();
-  let links = `
-    <label>Jump to:</label><br>
-  ` + inputGroups.concat([{label: "Miscellaneous"}]).map(g => `
-    <a href="#${g.label}">${g.label}</a>
-  `).join('&nbsp;&bull;&nbsp;');
-  links = `<p>${links}</p>`;
 
   let error = opts.error ? `<div class="alert alert-warning">${opts.error}</div>` : '';
 
   let addedInputs = [];
+  let addedInputGroups = [];
   let inputs = '';
-  inputGroups.forEach(g => {
-    let matchingInputs = Object.keys(opts.vars).filter(k => k.substring(1).match(g.pattern));
+  inputGroups.forEach(group => {
+    let matchingInputs = Object.keys(opts.vars)
+          .filter(k => k.substring(1).match(group.pattern))
+          .filter(k => inputMatchesFields(k.substring(1), opts.fields));
+    if (!matchingInputs.length) return;
     addedInputs = addedInputs.concat(matchingInputs);
-    let inputGroupHTML = `<a name="${g.label}"></a><h2>${g.label}</h2>`;
-    if (g.label === 'Fonts') inputGroupHTML += templates.fonts(opts.fonts, opts.addedFonts);
+    addedInputGroups.push(group);
+    let inputGroupHTML = `<a name="${group.label}"></a><h2>${group.label}</h2>`;
+    if (group.label === 'Fonts') inputGroupHTML += templates.fonts(opts.fonts, opts.addedFonts);
     inputGroupHTML += matchingInputs.map(k => templates.input(k, opts.vars[k])).join('\n');
     inputs += inputGroupHTML;
   })
-  let unmatchedInputs = Object.keys(opts.vars).filter(k => addedInputs.indexOf(k) === -1);
-  inputs += `<a name="Miscellaneous"></a><h2>Miscellaneous</h2>` + unmatchedInputs.map(k => templates.input(k, opts.vars[k])).join('\n');
+  let unmatchedInputs = Object.keys(opts.vars)
+        .filter(k => addedInputs.indexOf(k) === -1)
+        .filter(k => inputMatchesFields(k.substring(1), opts.fields));
+  if (unmatchedInputs.length) {
+    inputs += `<a name="Miscellaneous"></a><h2>Miscellaneous</h2>`;
+    inputs += unmatchedInputs.map(k => templates.input(k, opts.vars[k])).join('\n');
+    addedInputGroups.push({label: "Miscellaneous"});
+  }
+
+  let links = `
+    <label>Jump to:</label><br>
+  ` + addedInputGroups.map(g => `
+    <a href="#${g.label}">${g.label}</a>
+  `).join('&nbsp;&bull;&nbsp;');
+  links = `<p>${links}</p>`;
 
   return `
 <form onsubmit="strapping.compile(); return false">
