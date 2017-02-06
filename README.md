@@ -67,12 +67,11 @@ You can use `strapping.load()` to set the theme using saved JSON or Sass:
 
 ```
 window.save = function((result) => {
-  localStorage.setItem('variables', JSON.stringify(result.json))
+  localStorage.setItem('_variables.scss', result.sass);
 })
 
-let saved = localStorage.getItem('variables');
-if (saved) saved = JSON.parse(saved);
-strapping.load(saved);
+let saved = localStorage.getItem('_variables.scss');
+if (saved) strapping.load(saved);
 ```
 
 ### Position and Styles
