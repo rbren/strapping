@@ -14,3 +14,8 @@
 a {
   cursor: pointer;
 }
+
+ul.dropdown-menu {
+  max-height: 310px;
+  overflow-y: scroll;
+}
