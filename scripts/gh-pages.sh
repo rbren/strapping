@@ -1,4 +1,4 @@
-webpack
+webpack -p
 git checkout gh-pages
 rm -r ./dist
 mv static/* ./
