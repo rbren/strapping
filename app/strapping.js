@@ -14,7 +14,6 @@ Strapping.prototype.initialize = function(options) {
   this.variables = options.variables || {};
   this.fields = options.fields;
   this.addedFonts = [];
-  if (!options.variables) this.load(themes.filter(t => t.name === 'Strapping')[0].scss, true);
   options.parent = options.parent || document.body;
   this.sass = new Sass(options.workerPath);
   Object.keys(SASS_FILES).forEach(filename => {
@@ -29,8 +28,10 @@ Strapping.prototype.initialize = function(options) {
   this.editor = document.createElement('div');
   this.editor.setAttribute('id', 'StrappingEditor');
   options.parent.appendChild(this.editor);
-  this.loadFonts();
-  this.compile();
+  this.loadFonts(() => {
+    if (!options.variables) this.load(themes.filter(t => t.name === 'Strapping')[0].scss, true);
+    this.compile();
+  });
 }
 
 Strapping.prototype.saveAs = function(type) {
@@ -170,12 +171,12 @@ Strapping.prototype.showColorPicker = function(elem) {
 
 const FONTS_URL = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyB4434oep29sMRrJzDcNI5d8qR74aQJRvA";
 
-Strapping.prototype.loadFonts = function() {
+Strapping.prototype.loadFonts = function(cb) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = () => {
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
       this.fonts = JSON.parse(xmlHttp.responseText).items;
-      this.drawEditor();
+      cb();
     }
   }
   xmlHttp.open("GET", FONTS_URL, true);

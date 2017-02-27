@@ -19,3 +19,7 @@ ul.dropdown-menu {
   max-height: 310px;
   overflow-y: scroll;
 }
+
+.navbar-brand {
+  font-family: "Kalam", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif
+}
