@@ -1,53 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" href="dist/bootstrap.css">
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="dist/strapping.min.js"></script>
-    <script>
-      function start() {
-        strapping.initialize({
-          workerPath: 'dist/sass.worker.js',
-          parent: document.getElementById('StrappingContainer'),
-        });
-      }
-    </script>
-    <style>
-      #Readme h1,
-      #Readme a[href="https://bobby-brennan.github.io/strapping"] {
-        display: none;
-      }
-    </style>
-  </head>
-  <body onload="start()">
-    <nav class="navbar navbar-inverse">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand">Strapping!</a>
-        </div>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="https://github.com/bobby-brennan/strapping">GitHub</a></li>
-        </ul>
-      </div>
-    </nav>
-    <div class="container-fluid">
-      <div class="row strapping-row">
-        <div id="StrappingContainer" class="col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
-        <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9">
-          <div id="Intro">
-            <div class="alert alert-info">
-              <p>This is a demo of <a href="https://github.com/bobby-brennan/strapping">Strapping</a>.
-                 Play with the values on the left to alter the colors, styles, and fonts used
-                 on this page. Then click the <b>Preview</b> button to see your changes.
-              </p>
-              <p>You can <b>Save</b> your custom theme as Sass, CSS, or JSON, and can <b>Load</b> saved themes from Sass or JSON.
-              </p>
-            </div>
-          </div>
-          <h1>Readme</h1>
-          <div id="Readme">
-            <h1 id="strapping-">Strapping!</h1>
+<!DOCTYPE html> <html> <head> <link rel=stylesheet href=dist/bootstrap.css> <script src=https://code.jquery.com/jquery-3.1.1.slim.min.js></script> <script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js></script> <script src=dist/strapping.min.js></script> <script>function start(){strapping.initialize({workerPath:"dist/sass.worker.js",parent:document.getElementById("StrappingContainer")})}</script> <style>#Readme a[href="https://bobby-brennan.github.io/strapping"],#Readme h1{display:none}</style> </head> <body onload=start()> <nav class="navbar navbar-inverse"> <div class=container-fluid> <div class=navbar-header> <a class=navbar-brand>Strapping!</a> </div> <ul class="nav navbar-nav navbar-right"> <li><a href=https://github.com/bobby-brennan/strapping>GitHub</a></li> </ul> </div> </nav> <div class=container-fluid> <div class="row strapping-row"> <div id=StrappingContainer class="col-xs-12 col-sm-6 col-md-4 col-lg-3"></div> <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9"> <div id=Intro> <div class="alert alert-info"> <p>This is a demo of <a href=https://github.com/bobby-brennan/strapping>Strapping</a>. Play with the values on the left to alter the colors, styles, and fonts used on this page. Then click the <b>Preview</b> button to see your changes. </p> <p>You can <b>Save</b> your custom theme as Sass, CSS, or JSON, and can <b>Load</b> saved themes from Sass or JSON. </p> </div> </div> <h1>Readme</h1> <div id=Readme> <h1 id="strapping-">Strapping!</h1>
 <p><a href="https://bobby-brennan.github.io/strapping">Check out the demo</a></p>
 <p>Strapping is a web plugin for live-editing custom <a href="http://getbootstrap.com">Bootstrap</a> themes.
 Include Strapping on any page that uses Bootstrap CSS, and use the toolbar to modify the page&#39;s
@@ -137,11 +88,7 @@ of available fields using strings and regular expressions:</p>
   fields: [/^(alert-|button-|brand-)/, &#39;border-radius-base&#39;, &#39;link-color&#39;],
 })
 </code></pre>
-
-          </div>
-          <div id="Preview">
-            <h1>Preview</h1>
-            <hr>
+ </div> <div id=Preview> <h1>Preview</h1> <hr>
 <!-- Navbar
 ================================================== -->
 <div class="bs-docs-section clearfix">
@@ -1291,10 +1238,4 @@ of available fields using strings and regular expressions:</p>
 </footer>
 
 
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
-</html>
+ </div> </div> </div> </div> </body> </html> 
