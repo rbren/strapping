@@ -168,7 +168,7 @@ Strapping.prototype.showColorPicker = function(elem) {
   })
 }
 
-const FONTS_URL = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyCIPThYcVkXtTiNbDPBD1FdvKbPNX7d3iw";
+const FONTS_URL = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyB4434oep29sMRrJzDcNI5d8qR74aQJRvA";
 
 Strapping.prototype.loadFonts = function() {
   var xmlHttp = new XMLHttpRequest();
