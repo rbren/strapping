@@ -1,0 +1,32 @@
+#StrappingContainer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  top: 72px;
+  width: 300px;
+  overflow-y: scroll;
+  border-right: 1px solid #ccc;
+}
+
+#Contents {
+  margin-left: 300px;
+}
+
+#Readme h1,
+#Readme a[href="https://bobby-brennan.github.io/strapping"] {
+  display: none;
+}
+
+#Preview {
+  margin-top: 100px;
+}
+
+a {
+  cursor: pointer;
+}
+
+.navbar-brand {
+  font-family: "Kalam", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif
+}
+
+
