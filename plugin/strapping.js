@@ -9,6 +9,11 @@ const themes = require('./themes');
 
 let Strapping = module.exports = function() {}
 
+Strapping.scrollTo = function(name) {
+  let elem = document.getElementById('Strapping' + name);
+  elem.scrollIntoView();
+}
+
 Strapping.prototype.initialize = function(options) {
   if (typeof options === 'string') options = {workerPath: options};
   this.variables = options.variables || {};

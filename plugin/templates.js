@@ -108,7 +108,7 @@ templates.strapping = function(opts) {
     if (!matchingInputs.length) return;
     addedInputs = addedInputs.concat(matchingInputs);
     addedInputGroups.push(group);
-    let inputGroupHTML = `<a name="${group.label}"></a><h2>${group.label}</h2>`;
+    let inputGroupHTML = `<a id="Strapping${group.label}"></a><h2>${group.label}</h2>`;
     if (group.label === 'Fonts') inputGroupHTML += templates.fonts(opts.fonts, opts.addedFonts);
     inputGroupHTML += matchingInputs.map(k => templates.input(k, opts.vars[k])).join('\n');
     inputs += inputGroupHTML;
@@ -125,7 +125,7 @@ templates.strapping = function(opts) {
   let links = `
     <label>Jump to:</label><br>
   ` + addedInputGroups.map(g => `
-    <a href="#${g.label}">${g.label}</a>
+    <a onclick="Strapping.scrollTo('${g.label}')">${g.label}</a>
   `).join('&nbsp;&bull;&nbsp;');
   links = `<p>${links}</p>`;
 
