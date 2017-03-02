@@ -8,7 +8,7 @@ module.exports = {
   },
   output: {
     path: __dirname,
-    filename: "./static/dist/[name].min.js"
+    filename: "./static/build/[name].min.js"
   },
   resolve: {
     extensions: ['.js', '.ts']
@@ -29,10 +29,13 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([{
       from: 'node_modules/sass.js/dist/sass.worker.js',
-      to: './static/dist/sass.worker.js',
+      to: './static/build/sass.worker.js',
+    }, {
+      from: 'demo/styles/styles.css',
+      to: './static/build/styles.css',
     }, {
       from: 'demo/styles/bootstrap.css',
-      to: './static/dist/bootstrap.css',
+      to: './static/build/bootstrap.css',
     }]),
   ],
 }
