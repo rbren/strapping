@@ -1,9 +1,9 @@
 const INPUT_GROUPS = module.exports = [{
-  label: "Fonts",
-  pattern: /^(font-|headings-|text-color|link-color|link-hover-color)/
-}, {
   label: "Branding",
   pattern: /^(brand-|body-bg)/,
+}, {
+  label: "Fonts",
+  pattern: /^(font-|headings-|text-color|link-color|link-hover-color)/
 }, {
   label: "State",
   pattern: /^state-/,
