@@ -1,8 +1,8 @@
 {
   "name": "strapping",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "",
-  "main": "index.js",
+  "main": "dist/strapping.min.js",
   "scripts": {
     "test": "mocha"
   },
