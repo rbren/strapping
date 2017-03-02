@@ -57,7 +57,7 @@ templates.themes = function() {
   Setting a theme will overwrite your current settings.
 </p>
   ` + themes.map(theme => `
-<a href="#" onclick="strapping.setTheme('${theme.name}')">${theme.name}</a> - ${theme.description}
+<a onclick="strapping.setTheme('${theme.name}')">${theme.name}</a> - ${theme.description}
   `).join('<br>\n');
 }
 

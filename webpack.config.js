@@ -3,7 +3,8 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
-    "strapping": "./app/main",
+    "strapping": "./plugin/main",
+    "demo": "./demo/main",
   },
   output: {
     path: __dirname,
@@ -30,7 +31,7 @@ module.exports = {
       from: 'node_modules/sass.js/dist/sass.worker.js',
       to: './static/dist/sass.worker.js',
     }, {
-      from: 'app/styles/bootstrap.css',
+      from: 'demo/styles/bootstrap.css',
       to: './static/dist/bootstrap.css',
     }]),
   ],

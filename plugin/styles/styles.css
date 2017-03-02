@@ -7,19 +7,12 @@
   margin-top: 0;
 }
 
-#Preview {
-  margin-top: 100px;
-}
-
-a {
+#StrappingEditor a {
   cursor: pointer;
 }
 
-ul.dropdown-menu {
+#StrappingEditor ul.dropdown-menu {
   max-height: 310px;
   overflow-y: scroll;
 }
 
-.navbar-brand {
-  font-family: "Kalam", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif
-}
