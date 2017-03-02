@@ -126,9 +126,10 @@ background-color: ${this.variables[v]};
 
 Strapping.prototype.compile = function(callback, skipInputs) {
   callback = callback || function() {};
-  if (!skipInputs && this.compiledOnce) {
+  if (!skipInputs) {
     Object.keys(this.variables).forEach(v => {
-      this.variables[v] = utils.unescapeQuotes(document.getElementsByName(v)[0].value);
+      let elem = document.getElementsByName(v)[0];
+      if (elem) this.variables[v] = elem.value;
     });
   }
   let varFile = utils.getSassFromFonts(this.addedFonts) + '\n' + utils.getSassFromVariables(this.variables);
@@ -137,7 +138,6 @@ Strapping.prototype.compile = function(callback, skipInputs) {
   this.sass.compile('@import "_bootstrap";', (result) => {
     utils.addCSS(result.text, 'bootstrap');
     this.drawEditor(result.status ? result.message : null);
-    this.compiledOnce = true;
     callback({
       status: result.status,
       message: result.message,

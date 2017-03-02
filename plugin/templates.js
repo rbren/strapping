@@ -117,7 +117,7 @@ templates.strapping = function(opts) {
         .filter(k => addedInputs.indexOf(k) === -1)
         .filter(k => inputMatchesFields(k.substring(1), opts.fields));
   if (unmatchedInputs.length) {
-    inputs += `<a name="Miscellaneous"></a><h2>Miscellaneous</h2>`;
+    inputs += `<a id="StrappingMiscellaneous"></a><h2>Miscellaneous</h2>`;
     inputs += unmatchedInputs.map(k => templates.input(k, opts.vars[k])).join('\n');
     addedInputGroups.push({label: "Miscellaneous"});
   }
