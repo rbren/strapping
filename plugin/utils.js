@@ -13,7 +13,10 @@ utils.isColor = name => {
 
 utils.addCSS = (css, id) => {
   var style = document.createElement("style");
-  if (id) style.setAttribute('id', id);
+  if (id) {
+    utils.removeCSS(id);
+    style.setAttribute('id', id);
+  }
   style.type = "text/css";
   style.innerHTML = css;
   document.body.appendChild(style);

@@ -130,8 +130,6 @@ Strapping.prototype.compile = function(callback, skipInputs) {
   this.sass.writeFile('bootstrap/_variables.scss', varFile)
   this.editor.innerHTML = templates.loading();
   this.sass.compile('@import "_bootstrap";', (result) => {
-    utils.removeCSS('bootstrap');
-    utils.removeCSS('strapping');
     utils.addCSS(result.text, 'bootstrap');
     this.drawEditor(result.status ? result.message : null);
     this.compiledOnce = true;
