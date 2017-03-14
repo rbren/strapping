@@ -1,3 +1,7 @@
+body {
+  padding-top: 80px;
+}
+
 #StrappingContainer {
   position: fixed;
   left: 0;
